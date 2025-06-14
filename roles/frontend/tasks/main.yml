@@ -1,6 +1,6 @@
-- name: Install the latest version of Apache
+- name: Install the latest version of nginx
   ansible.builtin.dnf:
-    name: httpd
+    name: nginx
     state: installed
 
 - name:  remove pre-defined content of nginx
@@ -26,7 +26,8 @@
     dest: /etc/nginx/default.d/roboshop.conf
 
 
-- name: Start service nginx, if not started
-  ansible.builtin.service:
+- name: Start Nginx Service
+  ansible.builtin.systemd:
+    state: restarted
     name: nginx
-    state: started
+    enabled: yes
