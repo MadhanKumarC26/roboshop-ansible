@@ -1,0 +1,44 @@
+- name: Install maven
+  ansible.builtin.yum:
+    name: maven
+    state: installed
+
+- name: Add Application User
+  ansible.builtin.user:
+    name: roboshop
+
+- name: Remove old app content
+  ansible.builtin.file:
+    path: /app
+    state: absent
+
+- name: Create app Directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
+
+- name: Download shipping App content
+  ansible.builtin.unarchive:
+    src: https://roboshop-artifacts.s3.amazonaws.com/shipping.zip
+    dest: /app
+    remote_src: yes
+
+
+- name: Maven Build
+  ansible.builtin.shell: mvn clean package ; mv target/shipping-1.0.jar shipping.jar
+  args:
+    chdir: /app
+
+- name: COpy SystemD file
+  ansible.builtin.template:
+    src: "shipping.service"
+    dest: /etc/systemd/system/shipping.service
+
+- name: Load MySQL Schema
+  community.mysql.mysql_db:
+    state: import
+    name: all
+    target: /app/schema/shipping.sql
+    login_host: "{mysql-dev.devops26.shop}"
+    login_user: "roboshop"
+    login_password: "{{root_mysql_password}}"

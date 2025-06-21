@@ -20,9 +20,9 @@
     path: /app
     state: directory
 
-- name: Download catalogue App content
+- name: Download cart App content
   ansible.builtin.unarchive:
-    src: https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
+    src: https://roboshop-artifacts.s3.amazonaws.com/cart.zip
     dest: /app
     remote_src: yes
 
@@ -33,28 +33,13 @@
 
 - name: COpy SystemD file
   ansible.builtin.template:
-    src: "catalogue.service"
-    dest: /etc/systemd/system/catalogue.service
+    src: "cart.service"
+    dest: /etc/systemd/system/cart.service
 
-- name: Start catalogue Service
+- name: Start cart Service
   ansible.builtin.systemd:
-    name: "catalogue"
+    name: "cart"
     daemon_reload: yes
     enabled: yes
     state: restarted
 
-- name: Copy MongoDB Yum Repo file
-  ansible.builtin.copy:
-    src: mongodb.repo
-    dest: /etc/yum.repos.d/mongodb.repo
-
-- name: Install MongoDB Server
-  ansible.builtin.yum:
-    name: mongodb-org-shell
-    state: installed
-
-- name: Load Schema
-  community.mongodb.mongodb_shell:
-    login_host: mongodb-dev.devops26.shop
-    file: "/app/schema/catalogue.js"
-   idempotent: yes
