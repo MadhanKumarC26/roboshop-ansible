@@ -57,4 +57,4 @@
   community.mongodb.mongodb_shell:
     login_host: mongodb-dev.devops26.shop
     file: "/app/schema/catalogue.js"
-   idempotent: yes
+    idempotent: yes
