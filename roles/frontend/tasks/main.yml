@@ -22,9 +22,8 @@
 
 - name: Copy RoboShop Config file to Nginx
   ansible.builtin.template:
-    src: catalogue.service
-    dest: /etc/nginx/default.d/catalogue.service
-
+    src: roboshop.conf
+    dest: /etc/nginx/default.d/roboshop.conf
 
 - name: Start Nginx Service
   ansible.builtin.systemd:
