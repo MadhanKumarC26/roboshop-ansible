@@ -3,6 +3,9 @@
 #    name: remi-release-8.10-2.el8.remi.noarch.rpm
 #    state: installed
 #    disable_gpg_check: true
+- name: Enable Redis 6
+  ansible.builtin.shell: dnf module disable redis:remi
+
 
 - name: Enable Redis 6
   ansible.builtin.shell: dnf module enable redis:remi-6.2 -y
