@@ -1,1 +1,1 @@
-# roboshop-ansible v1
+# roboshop-ansible v1, v2
